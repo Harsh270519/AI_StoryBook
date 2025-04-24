@@ -1,8 +1,9 @@
-const API_PREFIX = process.env.REACT_APP_API_PREFIX || '';
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
+
+// Use an optional prefix: '' for local (proxy), '/api' in production
+const API_PREFIX = process.env.REACT_APP_API_PREFIX || '';
 
 function App() {
   const [prompt, setPrompt] = useState('');
@@ -12,11 +13,14 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [translateLang, setTranslateLang] = useState('Spanish');
 
-  // Generate new story with images
+  // 1. Generate a new story
   const generateStory = async () => {
     setLoading(true);
     try {
-      const res = await axios.post('${API_PREFIX}/stories', { text: prompt, num_pages: numPages });
+      const res = await axios.post(
+        `${API_PREFIX}/stories`,
+        { text: prompt, num_pages: numPages }
+      );
       console.log('Pages:', res.data.pages);
       setStoryPages(res.data.pages);
       setPageIndex(0);
@@ -27,14 +31,17 @@ function App() {
     setLoading(false);
   };
 
-  // Translate story pages
+  // 2. Translate the current story
   const translateStory = async () => {
     setLoading(true);
     try {
       const translated = await Promise.all(
         storyPages.map(async (page) => {
-          const res = await axios.post('${API_PREFIX}/translate', { text: page.text, target_lang: translateLang });
-          return { ...page, translation: res.data.translation };
+          const resp = await axios.post(
+            `${API_PREFIX}/translate`,
+            { text: page.text, target_lang: translateLang }
+          );
+          return { ...page, translation: resp.data.translation };
         })
       );
       setStoryPages(translated);
@@ -46,21 +53,20 @@ function App() {
     setLoading(false);
   };
 
-  // Read Aloud using TTS endpoint
+  // 3. Read aloud via TTS endpoint
   const readAloud = async () => {
     if (!storyPages.length) return;
     setLoading(true);
     try {
       const text = storyPages[pageIndex].translation || storyPages[pageIndex].text;
       const res = await axios.post(
-        '${API_PREFIX}/tts',
+        `${API_PREFIX}/tts`,
         { text },
         { responseType: 'arraybuffer' }
       );
       const blob = new Blob([res.data], { type: 'audio/mpeg' });
       const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      audio.play();
+      new Audio(url).play();
     } catch (e) {
       console.error('TTS error:', e);
       alert('Failed to play speech.');
@@ -148,9 +154,7 @@ function App() {
 
           <button
             className="nav-button"
-            onClick={() =>
-              setPageIndex((i) => Math.min(i + 1, storyPages.length - 1))
-            }
+            onClick={() => setPageIndex((i) => Math.min(i + 1, storyPages.length - 1))}
             disabled={pageIndex === storyPages.length - 1}
           >
             ›
