@@ -1,0 +1,125 @@
+body {
+  background: #f2e9dc;
+  margin: 0;
+  font-family: 'Georgia', serif;
+}
+
+.storybook-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fffbf2;
+  border: 8px solid #8b5a2b;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.storybook-title {
+  text-align: center;
+  font-size: 3rem;
+  color: #8b4513;
+  margin: 0;
+}
+
+.storybook-textarea {
+  width: 100%;
+  height: 100px;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 2px solid #8b4513;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.controls label,
+.controls button {
+  font-family: inherit;
+}
+
+.controls input,
+.controls select {
+  padding: 0.3rem;
+  border: 1px solid #8b4513;
+  border-radius: 4px;
+}
+
+.controls button {
+  padding: 0.5rem 1rem;
+  background: #8b4513;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.controls button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.flipbook {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  color: #8b4513;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+
+.nav-button:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.page-frame {
+  width: 320px;
+  height: 480px;
+  background: #fffefa;
+  border: 4px solid #8b4513;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.page-img {
+  width: 100%;
+  height: 60%;
+  object-fit: cover;
+}
+
+.no-image {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-style: italic;
+}
+
+.page-text {
+  padding: 0.5rem;
+  height: 40%;
+  overflow-y: auto;
+  font-size: 1rem;
+  color: #333;
+}
