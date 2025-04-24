@@ -1,3 +1,5 @@
+const API_PREFIX = process.env.REACT_APP_API_PREFIX || '';
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -14,7 +16,7 @@ function App() {
   const generateStory = async () => {
     setLoading(true);
     try {
-      const res = await axios.post('/api/stories', { text: prompt, num_pages: numPages });
+      const res = await axios.post('${API_PREFIX}/stories', { text: prompt, num_pages: numPages });
       console.log('Pages:', res.data.pages);
       setStoryPages(res.data.pages);
       setPageIndex(0);
@@ -31,7 +33,7 @@ function App() {
     try {
       const translated = await Promise.all(
         storyPages.map(async (page) => {
-          const res = await axios.post('/api/translate', { text: page.text, target_lang: translateLang });
+          const res = await axios.post('${API_PREFIX}/translate', { text: page.text, target_lang: translateLang });
           return { ...page, translation: res.data.translation };
         })
       );
@@ -51,7 +53,7 @@ function App() {
     try {
       const text = storyPages[pageIndex].translation || storyPages[pageIndex].text;
       const res = await axios.post(
-        '/api/tts',
+        '${API_PREFIX}/tts',
         { text },
         { responseType: 'arraybuffer' }
       );
